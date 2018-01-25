@@ -96,7 +96,7 @@ main_sources = [
 ]
 
 
-clattice = Extension('qmtk.clattice',
+clattice = Extension('qmtk._lattice',
                      sources=main_sources,
                      libraries=main_libraries,
                      language='c++',

@@ -55,7 +55,7 @@ public:
     return res;
   }
 
-  inline std::tuple<int> get_shape() const {
+  inline std::tuple<int> get_shape() {
     return std::make_tuple(length);
   }
 
@@ -63,7 +63,7 @@ public:
     length = n;
   }
 
-  inline int nElement() const {
+  inline int nElement() {
     return length;
   }
 
@@ -74,6 +74,7 @@ public:
 class PBCChain: public Chain
 {
 public:
+  PBCChain() : Chain() {};
   PBCChain(int shape) : Chain(shape) {};
 
   std::vector<bond> bonds(int nbr) {
@@ -211,16 +212,16 @@ public:
       return odd_neighbors((nbr+1)/2);
   }
 
-  inline std::tuple<int, int> get_shape() const {
+  inline std::tuple<int, int> get_shape() {
     return std::make_tuple(width, height);
   }
 
-  inline void set_shape(std::tuple<int, int> &shape) {
+  inline void set_shape(const std::tuple<int, int> &shape) {
     width = std::get<0>(shape);
     height = std::get<1>(shape);
   }
 
-  inline int nElement() const {
+  inline int nElement() {
     return width * height;
   }
 
@@ -232,6 +233,7 @@ public:
 class PBCSquare: public Square
 {
 public:
+  PBCSquare(): Square() {};
   PBCSquare(int x, int y): Square(x, y) {};
 
   // nbr = 2 * k - 1
@@ -313,43 +315,43 @@ PYBIND11_MODULE(_lattice, m) {
 
     py::class_<Chain>(m, "ChainBase")
       .def(py::init<>())
+      .def(py::init<int>())
       .def_readwrite("shape", &Chain::length)
       .def("sites", &Chain::sites)
       .def("bonds", &Chain::bonds)
       .def("neighbors", &Chain::neighbors)
-      .def("_get_shape", &Chain::get_shape)
-      .def("_set_shape", &Chain::set_shape)
+      .def_property("shape", &Chain::get_shape, &Chain::set_shape)
       .def("numel", &Chain::nElement);
 
     py::class_<PBCChain>(m, "PBCChainBase")
       .def(py::init<>())
+      .def(py::init<int>())
       .def_readwrite("shape", &PBCChain::length)
       .def("sites", &PBCChain::sites)
       .def("bonds", &PBCChain::bonds)
       .def("neighbors", &PBCChain::neighbors)
-      .def("_get_shape", &PBCChain::get_shape)
-      .def("_set_shape", &PBCChain::set_shape)
+      .def_property("shape", &PBCChain::get_shape, &PBCChain::set_shape)
       .def("numel", &PBCChain::nElement);
 
     py::class_<Square>(m, "SquareBase")
       .def(py::init<>())
+      .def(py::init<int, int>())
       .def_readwrite("width", &Square::width)
       .def_readwrite("height", &Square::height)
       .def("sites", &Square::sites)
       .def("bonds", &Square::bonds)
       .def("neighbors", &Square::neighbors)
-      .def("_get_shape", &Square::get_shape)
-      .def("_set_shape", &Square::set_shape)
+      .def_property("shape", &Square::get_shape, &Square::set_shape)
       .def("numel", &Square::nElement);
 
     py::class_<PBCSquare>(m, "PBCSquareBase")
       .def(py::init<>())
+      .def(py::init<int, int>())
       .def_readwrite("width", &PBCSquare::width)
       .def_readwrite("height", &PBCSquare::height)
       .def("sites", &PBCSquare::sites)
       .def("bonds", &PBCSquare::bonds)
       .def("neighbors", &PBCSquare::neighbors)
-      .def("_get_shape", &PBCSquare::get_shape)
-      .def("_set_shape", &PBCSquare::set_shape)
+      .def_property("shape", &PBCSquare::get_shape, &PBCSquare::set_shape)
       .def("numel", &PBCSquare::nElement);
 }

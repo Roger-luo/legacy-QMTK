@@ -6,19 +6,28 @@ class LatticeBase(object):
     """lattice base
     """
 
-    @alias(shape=['length', 'size'])
-    @require('shape')
-    def __init__(self, **kwargs):
+    def __init__(self, nbr):
         super(LatticeBase, self).__init__()
-        self.shape = kwargs.pop('shape')
+        self._cache = {}
+        self.nbr = None
 
     @property
-    def shape(self):
-        return self._get_shape()
+    def cache(self):
+        return self._cache[self.nbr]
 
-    @shape.setter
-    def shape(self, value):
-        return self._set_shape(value)
+    @cache.setter
+    def cache(self, value):
+        self._cache[self.nbr] = value
+
+    def grid(self, nbr=None):
+        if nbr is None:
+            self.nbr = 0
+        else:
+            self.nbr = nbr
+
+        if self.nbr not in self._cache:
+            self.cache = self.bonds()
+        return self.catch
 
 
 class Chain(LatticeBase, ChainBase):
