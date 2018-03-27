@@ -4,7 +4,7 @@ import os
 from qmtk.utils.abstracts import Iterator
 
 
-class TypeCheck(Preprocessor):
+class typecheck(Preprocessor):
     """type check decorator
 
     check function arguments type and argument numbers
@@ -37,7 +37,7 @@ class TypeCheck(Preprocessor):
     """
 
     def __init__(self, *args, **kwargs):
-        super(TypeCheck, self).__init__()
+        super(typecheck, self).__init__()
 
         self.CTRL_ENVS['TYPECHECK'] = os.environ.get('QMTK_TYPECHECK', None)
 
@@ -96,7 +96,7 @@ class TypeCheck(Preprocessor):
                     raise TypeError(pos + ' ' + err_msg)
 
 
-class Alias(Preprocessor):
+class alias(Preprocessor):
     """keyword argument alias
 
     use alias for keyword arguements
@@ -126,7 +126,7 @@ class Alias(Preprocessor):
     """
 
     def __init__(self, **kwargs):
-        super(Alias, self).__init__()
+        super(alias, self).__init__()
         self.CTRL_ENVS['ALIAS'] = os.environ.get('QMTK_ALIAS', None)
 
         self.alias_list = {}
@@ -150,7 +150,7 @@ class Alias(Preprocessor):
                 self.use(realname, aliases, kwargs)
 
 
-class Require(Preprocessor):
+class require(Preprocessor):
     """check required keywords
 
     check implicit keywords declared by **kwargs in the function
@@ -166,7 +166,7 @@ class Require(Preprocessor):
     """
 
     def __init__(self, *keys, **kwargs):
-        super(Require, self).__init__()
+        super(require, self).__init__()
         self.CTRL_ENVS['REQUIRE'] = os.environ.get('QMTK_REQUIRE', None)
 
         self.keys = keys

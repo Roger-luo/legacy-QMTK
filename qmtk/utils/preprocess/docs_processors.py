@@ -1,7 +1,7 @@
 from functools import wraps
 
 
-class DocInherit(object):
+class inheritdoc(object):
     """
     Docstring inheriting method descriptor
 

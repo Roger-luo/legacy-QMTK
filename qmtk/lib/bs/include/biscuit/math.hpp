@@ -1,0 +1,45 @@
+#ifndef BS_MATH_INC
+#define BS_MATH_INC
+
+#include "tensor.hpp"
+
+namespace bs {
+
+#define IMPLEMENT_BASIC_TENSOR_FUNC(NAME) \
+template <typename dtype> \
+tensor<dtype> &NAME(tensor<dtype> &dst, const tensor<dtype> &src) \
+{ \
+  fmap<op::NAME, dtype, dtype>(dst, src); \
+  return dst; \
+}
+
+IMPLEMENT_BASIC_TENSOR_FUNC(cos)
+IMPLEMENT_BASIC_TENSOR_FUNC(sin)
+IMPLEMENT_BASIC_TENSOR_FUNC(tan)
+IMPLEMENT_BASIC_TENSOR_FUNC(acos)
+IMPLEMENT_BASIC_TENSOR_FUNC(asin)
+IMPLEMENT_BASIC_TENSOR_FUNC(atan)
+IMPLEMENT_BASIC_TENSOR_FUNC(atan2) // real only
+
+// Hyperbolic functions
+IMPLEMENT_BASIC_TENSOR_FUNC(cosh)
+IMPLEMENT_BASIC_TENSOR_FUNC(sinh)
+IMPLEMENT_BASIC_TENSOR_FUNC(tanh)
+IMPLEMENT_BASIC_TENSOR_FUNC(acosh)
+IMPLEMENT_BASIC_TENSOR_FUNC(asinh)
+IMPLEMENT_BASIC_TENSOR_FUNC(atanh)
+
+// Exponential and logarithmic functions
+IMPLEMENT_BASIC_TENSOR_FUNC(exp)
+IMPLEMENT_BASIC_TENSOR_FUNC(log)
+IMPLEMENT_BASIC_TENSOR_FUNC(log10)
+IMPLEMENT_BASIC_TENSOR_FUNC(modf)
+IMPLEMENT_BASIC_TENSOR_FUNC(exp2)
+IMPLEMENT_BASIC_TENSOR_FUNC(expm1)
+IMPLEMENT_BASIC_TENSOR_FUNC(log1p)
+IMPLEMENT_BASIC_TENSOR_FUNC(log2)
+IMPLEMENT_BASIC_TENSOR_FUNC(sqrt)
+
+} // namespace bs
+
+#endif // BS_MATH_INC

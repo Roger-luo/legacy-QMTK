@@ -21,7 +21,7 @@ Usage:
 all the samplers are decorators. define your distribution function in python
 and use a sampler to decorate it, or just use the factory methods. And you have
 to specify the sample domain you are sampling from, which is defined in
-qmtk.sampler.space with real for real space domain, discrete for discrete
+qmtk.space with real for real space domain, discrete for discrete
 integer domain, and spinlattice for spin lattice domain
 (with a spin on a lattice).
 
@@ -51,9 +51,7 @@ have fun!
 """
 
 
-from .space import real, discrete, spinlattice, SampleSpace
 from .core import reject, direct, metropolis, SamplerBase
-import multi
 
 
 __all__ = [
@@ -62,11 +60,6 @@ __all__ = [
     'metropolis',
     'sample',
     'multi',
-
-    'real',
-    'discrete',
-    'spinlattice',
-    'SampleSpace',
 ]
 
 

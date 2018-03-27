@@ -1,5 +1,5 @@
 import multiprocessing as mp
-from sampler import sample
+from qmtk.sampler import sample
 from functools import wraps
 
 

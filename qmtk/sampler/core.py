@@ -3,7 +3,7 @@ from sys import float_info
 from numpy.random import rand
 from functools import wraps
 
-from .space import SampleSpace
+from qmtk.space import SpaceBase
 from qmtk.utils.preprocess import typecheck
 
 
@@ -14,7 +14,7 @@ class SamplerBase(object):
     """sampler base.
     """
 
-    @typecheck(None, SampleSpace, int)
+    @typecheck(None, SpaceBase, int)
     def __init__(self, space, itr):
         super(SamplerBase, self).__init__()
         # type check for space in base class

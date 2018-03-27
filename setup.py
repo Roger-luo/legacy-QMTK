@@ -6,10 +6,39 @@ import setuptools.command.build_py
 import distutils.unixccompiler
 import distutils.command.build
 import distutils.command.clean
+import distutils.ccompiler
 import os
+import sys
 import subprocess
 import platform
 import shutil
+
+
+def has_flag(compiler, flagname):
+    """Return a boolean indicating whether a flag name is supported on
+    the specified compiler.
+    """
+    import tempfile
+    with tempfile.NamedTemporaryFile('w', suffix='.cpp') as f:
+        f.write('int main (int argc, char **argv) { return 0; }')
+        try:
+            compiler.compile([f.name], extra_postargs=[flagname])
+        except setuptools.distutils.errors.CompileError:
+            return False
+    return True
+
+
+def cpp_flag(compiler):
+    """Return the -std=c++[11/14] compiler flag.
+    The c++14 is prefered over c++11 (when it is available).
+    """
+    if has_flag(compiler, '-std=c++14'):
+        return '-std=c++14'
+    elif has_flag(compiler, '-std=c++11'):
+        return '-std=c++11'
+    else:
+        raise RuntimeError('Unsupported compiler -- at least C++11 support '
+                           'is needed!')
 
 
 class build_module(Command):
@@ -49,9 +78,32 @@ class develop(setuptools.command.develop.develop):
 
 
 class build_ext(setuptools.command.build_ext.build_ext):
+    c_opts = {
+        'msvc': ['/EHsc'],
+        'unix': [],
+    }
+
+    if sys.platform == 'darwin':
+        c_opts['unix'] += ['-stdlib=libc++', '-mmacosx-version-min=10.7']
 
     def run(self):
         setuptools.command.build_ext.build_ext.run(self)
+
+    # def build_extensions(self):
+    #     ct = self.compiler.compiler_type
+    #     opts = self.c_opts.get(ct, [])
+    #     if ct == 'unix':
+    #         opts.append('-DVERSION_INFO="%s"' %
+    #                     self.distribution.get_version())
+    #         opts.append(cpp_flag(self.compiler))
+    #         if has_flag(self.compiler, '-fvisibility=hidden'):
+    #             opts.append('-fvisibility=hidden')
+    #     elif ct == 'msvc':
+    #         opts.append('/DVERSION_INFO=\\"%s\\"' %
+    #                     self.distribution.get_version())
+    #     for ext in self.extensions:
+    #         ext.extra_compile_args = opts
+    #     build_ext.build_extensions(self)
 
 
 class clean(distutils.command.clean.clean):
@@ -80,32 +132,67 @@ def make_relative_rpath(path):
 include_dirs = []
 library_dirs = []
 extra_link_args = []
-extra_compile_args = ['-std=c++11', '-O3', '-Wno-write-strings']
+extra_compile_args = ['-std=c++14', '-O3',
+                      '-Wno-write-strings']
 
 cwd = os.path.dirname(os.path.abspath(__file__))
 
 include_dirs += [
     cwd,
+    os.path.join(sys.exec_prefix, 'include'),
 ]
 
 main_compile_args = ['-D_CORE']
 main_libraries = []
 main_link_args = []
 main_sources = [
-    'qmtk/lattice/csrc/lattice.cpp'
+    'qmtk/csrc/lattice.cpp'
 ]
 
 
-clattice = Extension('qmtk._lattice',
-                     sources=main_sources,
-                     libraries=main_libraries,
-                     language='c++',
-                     extra_compile_args=main_compile_args + extra_compile_args,
-                     include_dirs=include_dirs,
-                     library_dirs=library_dirs,
-                     extra_link_args=extra_link_args +
-                     main_link_args,
-                     )
+lattice = Extension('qmtk._lattice',
+                    sources=main_sources,
+                    libraries=main_libraries,
+                    language='c++',
+                    extra_compile_args=main_compile_args + extra_compile_args,
+                    include_dirs=include_dirs,
+                    library_dirs=library_dirs,
+                    extra_link_args=extra_link_args +
+                    main_link_args,
+                    )
+
+utils = Extension('qmtk._utils',
+                  sources=['qmtk/csrc/utils.cpp'],
+                  libraries=main_libraries,
+                  language='c++',
+                  extra_compile_args=main_compile_args + extra_compile_args,
+                  include_dirs=include_dirs,
+                  library_dirs=library_dirs,
+                  extra_link_args=extra_link_args +
+                  main_link_args,
+                  )
+
+space = Extension('qmtk._space',
+                  sources=['qmtk/csrc/space.cpp'],
+                  libraries=main_libraries,
+                  language='c++',
+                  extra_compile_args=main_compile_args + extra_compile_args,
+                  include_dirs=include_dirs,
+                  library_dirs=library_dirs,
+                  extra_link_args=extra_link_args +
+                  main_link_args,
+                  )
+
+ham = Extension('qmtk._ham',
+                sources=['qmtk/csrc/ham.cpp'],
+                libraries=main_libraries,
+                language='c++',
+                extra_compile_args=main_compile_args + extra_compile_args,
+                include_dirs=include_dirs,
+                library_dirs=library_dirs,
+                extra_link_args=extra_link_args +
+                main_link_args,
+                )
 
 version = '0.1.12'
 if os.getenv('PYTORCH_BUILD_VERSION'):
@@ -124,7 +211,7 @@ setup(
     name='qmtk',
     version='0.1',
     description='quantum mechanics toolkit',
-    ext_modules=[clattice],
+    ext_modules=[lattice, utils, space, ham],
     cmdclass={
         'build_py': build_py,
         'build_ext': build_ext,
@@ -137,4 +224,5 @@ setup(
         'lib/*.so',
         'lib/*.hpp',
     ]},
+    test_suite='test',
 )

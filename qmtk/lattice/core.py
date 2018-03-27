@@ -31,13 +31,32 @@ class LatticeBase(object):
             self.nbr = nbr
 
         if self.nbr not in self._cache:
-            self.cache = self.bonds(self.nbr)
+            if self.nbr == 0:
+                self.cache = self.sites()
+            else:
+                self.cache = self.bonds(self.nbr)
         return self.cache
 
 
 class Chain(LatticeBase, ChainBase):
+    """chain lattice
+    """
     pass
 
 
 class Square(LatticeBase, SquareBase):
+    """square lattice
+    """
+    pass
+
+
+class PBCChain(LatticeBase, PBCChainBase):
+    """chain lattice (periodic boundary)
+    """
+    pass
+
+
+class PBCSquare(LatticeBase, PBCSquareBase):
+    """square lattice (periodic boundary)
+    """
     pass
