@@ -1,0 +1,37 @@
+nparticles: 4
+data:
+  name: J1-J2
+  lattice: Chain
+  size: 100000
+  pbc: True
+  level: 0
+noise:
+  size: 64
+  type: Gaussian
+generator:
+  suffix: g
+  optimizer:
+    learning_rate: 2e-4
+    optim_betas:
+    - 0.9
+    - 0.999
+discriminator:
+  suffix: d
+  optimizer:
+    learning_rate: 2e-4
+    optim_betas:
+    - 0.9
+    - 0.999
+loss: BCE
+schedule:
+  num: 100
+  batch_size: 100
+  interval:
+    dump: 300
+path:
+  root: data
+  model: models
+  infos: infos
+  logs: logs
+prefix:
+- fuckstrictyaml

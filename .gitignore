@@ -1,0 +1,55 @@
+build/
+dist/
+vmc.egg-info/
+*/**/__pycache__
+vmc/version.py
+vmc/csrc/generic/TensorMethods.cpp
+vmc/lib/*.so*
+vmc/lib/*.a*
+vmc/lib/*.dylib*
+vmc/lib/*.h
+vmc/lib/build
+vmc/lib/tmp_install
+vmc/lib/include
+vmc/lib/vmc_shm_manager
+vmc/csrc/cudnn/cuDNN.cpp
+vmc/csrc/nn/THNN.cwrap
+vmc/csrc/nn/THNN.cpp
+vmc/csrc/nn/THCUNN.cwrap
+vmc/csrc/nn/THCUNN.cpp
+vmc/csrc/nn/THNN_generic.cwrap
+vmc/csrc/nn/THNN_generic.cpp
+vmc/csrc/nn/THNN_generic.h
+vmc/csrc/generated
+docs/src/**/*
+test/data/legacy_modules.t7
+test/data/gpu_tensors.pt
+test/htmlcov
+test/.coverage
+*/*.pyc
+*/**/*.pyc
+*/**/**/*.pyc
+*/**/**/**/*.pyc
+*/**/**/**/**/*.pyc
+*/*.so*
+*/**/*.so*
+*/**/*.dylib*
+test/data/legacy_serialized.pt
+
+# IPython notebook checkpoints
+.ipynb_checkpoints
+
+# Editor temporaries
+*.swn
+*.swo
+*.swp
+*~
+
+# OSX dir files
+.DS_Store
+
+# logs
+*.log
+
+# jsons
+*.json

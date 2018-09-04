@@ -1,0 +1,141 @@
+\documentclass{article}
+\usepackage[utf8]{inputenc}
+\usepackage{amsmath}
+
+\title{Notes}
+\author{Roger Luo}
+\date{September 2017}
+
+\newcommand{\mean}[1]{\langle #1 \rangle}
+\newcommand{\rket}[1]{|#1\rangle}
+\newcommand{\lket}[1]{\langle #1 |}
+\newcommand{\norm}[1]{\left\lVert#1\right\rVert}
+\newcommand{\conj}[1]{\overline{#1}}
+\newcommand{\diff}[1]{\partial_{\conj{\theta}} #1}
+
+\begin{document}
+
+\maketitle
+
+\section{Sampling configs from arbitrary quantum state on given basis}\label{sampling}
+
+A pair of basis for a single qubit could be
+
+\begin{equation}
+\begin{aligned}
+\rket{\epsilon_0} &= \cos{\theta}\rket{0} + \sin{\theta} e^{i\phi}\rket{1}\\
+\rket{\epsilon_1} &= -\sin{\theta} e^{-i\phi}\rket{0} + \cos{\theta}\rket{1}
+\end{aligned}
+\end{equation}
+
+and their eigen value should be $\{-1, 1\}$, thus
+
+\begin{equation}
+P
+\begin{pmatrix}
+1 & 0\\
+0 & -1
+\end{pmatrix}
+P^{-1}
+\end{equation}
+
+and P's colums are the its eigenvectors
+
+\begin{equation}
+P =
+\begin{pmatrix}
+\cos{\theta} & -\sin{\theta} e^{-i\phi}\\
+\sin{\theta} e^{i\phi} & \cos{\theta}
+\end{pmatrix}
+\end{equation}
+
+and $P^{-1}$ is
+
+\begin{equation}
+P^{-1} =
+\begin{pmatrix}
+\cos{\theta} & \sin{\theta}e^{-i\phi}\\
+-\sin{\theta}e^{i\phi} & \cos{\theta}
+\end{pmatrix}
+\end{equation}
+
+Therefore, the operator is
+
+\begin{equation}
+\begin{pmatrix}
+\cos{2\theta} & \sin{2\theta}e^{-i\phi}\\
+\sin{2\theta}e^{i\phi} & -\cos{2\theta}
+\end{pmatrix}
+\end{equation}
+
+\section{Summary}
+
+Operator on bloch sphere
+
+\begin{equation}
+O = \begin{pmatrix}
+\cos{2\theta} & \sin{2\theta}e^{-i\phi}\\
+\sin{2\theta}e^{i\phi} & -\cos{2\theta}
+\end{pmatrix}
+\end{equation}
+
+its eigen vectors and corresponding eigen values are
+
+\begin{equation}
+\begin{aligned}
+\begin{pmatrix}
+\cos{\theta}\\
+\sin{\theta}e^{i\phi}
+\end{pmatrix}&, 1\\
+\begin{pmatrix}
+-\sin{\theta}e^{-i\phi}\\
+\cos{\theta}
+\end{pmatrix}&, -1\\
+\end{aligned}
+\end{equation}
+
+To transform a state vector $\rket{\Psi}$ on $\sigma_z$ basis to $O$ basis by matrix $P$ in section \ref{sampling}:
+
+\begin{equation}
+\begin{aligned}
+\rket{\Psi} &= A_0\rket{\epsilon_0} + A_1\rket{\epsilon_1} \\
+            &= A_0 P\rket{0} + A_1 P \rket{1}
+\end{aligned}
+\end{equation}
+
+or on $\sigma_z$ basis
+
+\begin{equation}
+P \begin{pmatrix}
+A_0\\
+A_1
+\end{pmatrix}
+\end{equation}
+
+the inverse tranformation is:
+
+given a state $\rket{\Psi}$ on $\sigma_z$ basis, we have
+
+\begin{equation}
+\begin{aligned}
+\rket{\Psi} &= A_0\rket{0} + A_1\rket{1}\\
+            &= A_0 P^{-1}\rket{\epsilon_0} + A_1 P^{-1} \rket{\epsilon_1}
+\end{aligned}
+\end{equation}
+
+\section{Many-body case}
+
+$\sigma_z$ basis: $\rket{s_0}, \rket{s_1}$
+$O^k$ basis: $\rket{m_0}, \rket{m_1}$
+
+Give a quantum state $\rket{\Psi}$ on $n$ particles on $\sigma_z$'s basis
+
+\begin{equation}
+\begin{aligned}
+\rket{\Psi} &= \sum_{s_i\in\{0, 1\}} A_{s_1,\cdots, s_n}\bigotimes_{i=1}^{n}\rket{s_i}\\
+            &= \sum_{m_i\in\{0, 1\}} A_{m_1, \cdots, m_n}\bigotimes_{i=1}^{n} P_i^{-1}\rket{m_i}\\
+            &= \bigotimes_{i=1}^{n} P_i^{-1} \sum_{m_i\in\{0, 1\}}A_{m_1, \cdots, m_n} \bigotimes_{i=1}^{n} \rket{m_i}
+\end{aligned}
+\end{equation}
+
+\end{document}

@@ -1,0 +1,56 @@
+\documentclass{article}
+\usepackage[utf8]{inputenc}
+\usepackage{amsmath}
+
+\title{Notes}
+\author{Roger Luo}
+\date{September 2017}
+
+\newcommand{\mean}[1]{\langle #1 \rangle}
+\newcommand{\rket}[1]{|#1\rangle}
+\newcommand{\lket}[1]{\langle #1 |}
+\newcommand{\norm}[1]{\left\lVert#1\right\rVert}
+\newcommand{\conj}[1]{\overline{#1}}
+\newcommand{\diff}[1]{\partial_{\conj{\theta}} #1}
+
+\begin{document}
+
+\maketitle
+
+\section{Approximate Energy derivative with local energy}
+
+Given the total energy is:
+
+\begin{equation}
+    \mean{E} = \frac{1}{\sum_l |\Psi_l|^2}\sum_l |\Psi_l|^2 E_{loc}
+\end{equation}
+
+and $E_{loc}(L) = \frac{\sum_{r}H_{lr}\conj{\Psi}_r}{\conj{\Psi}_l}$, denote $E_{loc}(L)$ as $\eta_l$ and denote $\frac{1}{\Psi}\frac{\partial \Psi}{\partial \conj{\theta}}$ as $\Omega$ and $\frac{1}{\conj{\Psi}}\frac{\partial \conj{\Psi}}{\partial \conj{\theta}}$ as $\Omega^*$ and because network outputs $\Psi$, $\Omega=0$
+
+\begin{equation}
+\begin{aligned}
+    \frac{\partial E}{\partial \conj{\theta}} &= -\frac{1}{Z^2} \diff{Z} \sum_l |\Psi_l|^2 \eta_l + \frac{1}{Z}\diff{\sum_l |\Psi_l|^2 \eta_l} \\
+    &= \mean{\Omega + \Omega^*} \mean{E} + \frac{1}{Z}\diff{\sum_l |\Psi_l|^2 \eta_l}\\
+    &= \mean{\Omega^*}\mean{E} + \frac{1}{Z}\diff{\sum_l |\Psi_l|^2 \eta_l}\\
+    &= \mean{\Omega^*}\mean{E} + \frac{1}{Z}\sum_l \diff{|\Psi_l|^2} \eta_l\\
+    &= \mean{\Omega^*}\mean{E} + \frac{1}{Z}\sum_l (\diff{\Psi_l}\conj{\Psi}_l + \Psi_l\diff{\conj{\Psi}_l})\eta_l + |\Psi_l|^2 \diff{\eta_l}\\
+    &= \mean{\Omega^*}\mean{E} + \mean{\diff{\eta_l}} + \frac{1}{Z}\sum_l |\Psi_l|^2 \Omega^*\eta_l
+\end{aligned}
+\end{equation}
+
+\begin{equation}
+\begin{aligned}
+\sum_l |\Psi_l|^2 \diff{\eta_l} &= \sum_l |\Psi_l|^2 \diff{\frac{\sum_{r}H_{lr}\conj{\Psi}_r}{\conj{\Psi}_l}} = - \sum_l |\Psi_l|^2 \frac{\conj{\Psi}_l\sum_r H_{lr}\diff{\conj{\Psi}_r} - \diff{\conj{\Psi}_l}\sum_r H_{lr}\conj{\Psi}_r}{\conj{\Psi}_l^2} \\
+&= -\sum_l |\Psi_l|^2 \frac{\Psi_l\sum_r H_{lr}\conj{\Psi}_r\Omega_r^* - \conj{\Psi}_l\Omega_l^*\sum_r H_{lr}\conj{\Psi}_r}{\conj{\Psi}_l^2}\\
+&= 
+\end{aligned}
+\end{equation}
+
+\begin{equation}
+\begin{aligned}
+\sum_l |\Psi_l|^2 \Omega_l^* \eta_l &= \sum_l\Psi_l\conj{\Psi}_l \Omega_l^* \frac{\sum_r H_{lr}\conj{\Psi}_r}{\conj{\Psi}_l}\\
+&= \sum_l \Psi_l\Omega_l^*\sum_r H_{lr}\conj{\Psi}_r
+\end{aligned}
+\end{equation}
+
+\end{document}

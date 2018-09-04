@@ -1,0 +1,23 @@
+Sampler
+===================================
+.. automodule:: vmc.sampler
+
+vmc.sampler
+===================================
+
+samplers are subclass of :class:`SamplerBase`, each sampler should implement methods below:
+
+    automethod:: step
+    automethod:: sample
+
+There are some other methods that may not need to be modified:
+
+    automethod:: measure
+
+Currently, sampling methods below is implemented:
+
+    :class: `STMetropolis` Single thread metropolis
+    :class: `MPMetropolis` Multi - process metropolis
+    :class: `Metropolis` an unified API for metropolis method
+
+

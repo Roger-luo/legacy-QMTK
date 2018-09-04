@@ -1,0 +1,26 @@
+device: cpu
+hamiltonian:
+  lattice:
+    pbc: true
+    size: 3
+  mag: 1.0
+  name: TFI
+label:
+  figure: mlp-24-09-2017-1791.png
+  name: 24-09-2017-1791
+model:
+  name: MLP
+  size:
+  - 3
+  - 12
+  - 12
+  - 1
+sampler:
+  test:
+    burn: 200
+    itr: 1000
+    thin: 1
+  train:
+    burn: 200
+    itr: 1000
+    thin: 1
